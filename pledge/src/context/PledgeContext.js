@@ -50,14 +50,18 @@ export const PledgeProvider = ({ children }) => {
     }
 
 
-    function deletePledge({ name }) {
+    function deletePledge(name) {
         setPledges(prevPledges => {
+            // console.log(prevPledges.filter(pledge => pledge.name !== name))
             return prevPledges.filter(pledge => pledge.name !== name)
+        })
+        setContributions(prevContributions => {
+            return prevContributions.filter((pledge) => pledge.pledgename !== name)
         })
     }
 
 
-    function deleteContributor({ name }) {
+    function deleteContributor(name) {
         setContributors(prevContributors => {
             return prevContributors.filter(contributor => contributor.name !== name)
         })
@@ -89,7 +93,7 @@ export const PledgeProvider = ({ children }) => {
             if (prevContributions.find(pledge => pledge.pledgename === pledgename)) {
                 let target = contributions.filter((pledge) => pledge.pledgename === pledgename)
                 let remainders = contributions.filter((pledge) => pledge.pledgename !== pledgename)
-                contribution+=target[0].contribution
+                contribution += target[0].contribution
                 return [...remainders, { pledgename, contribution }]
             }
             return [...prevContributions, { pledgename, contribution }]
