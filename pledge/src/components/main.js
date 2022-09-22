@@ -7,14 +7,17 @@ import { usePledges } from '../context/PledgeContext'
 import AddContributorModal from './AddContributor'
 import MakePledgePaymentModal from './MakePledgePayment'
 import TotalPledgeAmount from './TotalPledgeAmount'
-
+import ViewContributorsModal from './ViewContributorsModal'
 
 export default function Main() {
     const [viewPledgeForm, setViewPledgeForm] = useState(false)
 
     const [viewAddContributorForm, setViewAddContributorForm] = useState(false)
 
+    const [viewContributors, setViewContributors] = useState(false)
+
     const [viewPledgePayment, setViewPledgePayment] = useState(false)
+
     const [pledgeName, setPledgeName] = useState()
 
     const { pledges, getTotalPledgePayments } = usePledges()
@@ -36,7 +39,12 @@ export default function Main() {
                             <PledgeCard pledgename={p.name} collected={getTotalPledgePayments(p.name)} target={p.target} paymentAction={() => {
                                 setPledgeName(p.name)
                                 setViewPledgePayment(true)
-                            }} />
+                            }}
+                                viewConts={() => {
+                                    setViewContributors(true)
+                                    setPledgeName(p.name)
+                                }}
+                            />
                         )
 
                     })
@@ -52,6 +60,9 @@ export default function Main() {
             />
 
             <MakePledgePaymentModal show={viewPledgePayment} handleClose={() => setViewPledgePayment(false)} pledgeName={pledgeName} />
+
+            
+            <ViewContributorsModal show={viewContributors} pledgename={pledgeName} handleClose={() => setViewContributors(false)} />
         </>
     )
 }
